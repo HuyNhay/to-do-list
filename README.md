@@ -1,2 +1,2 @@
 # To Do List
-React + Tailwind CSS
+React + Tailwind CSS + Vite
