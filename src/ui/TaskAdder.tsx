@@ -1,32 +1,23 @@
 import { useState } from 'react';
-import { TaskType } from './data';
 
-export default function AddSection({
-  tasks,
-  setTasks,
+export default function TaskAdder({
+  addTask,
 }: {
-  tasks: TaskType[];
-  setTasks: React.Dispatch<React.SetStateAction<TaskType[]>>;
+  addTask: (taskName: string) => void;
 }) {
   const [inputValue, setInputValue] = useState('');
-
-  const handleAddTask = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (inputValue.trim() === '') {
-      return;
-    }
-    if (tasks.some((task) => task.name === inputValue)) {
-      alert('Task already exists');
-    } else {
-      setTasks([...tasks, { name: inputValue, isCompleted: false }]);
-    }
-    setInputValue('');
-  };
 
   return (
     <form
       className="col-span-4 mx-6 flex flex-col gap-7 lg:col-span-8 lg:col-start-3 lg:col-end-11 lg:mx-0"
-      onSubmit={handleAddTask}
+      onSubmit={(e) => {
+        e.preventDefault();
+        if (inputValue.trim() === '') {
+          return;
+        }
+        addTask(inputValue);
+        setInputValue('');
+      }}
     >
       <input
         value={inputValue}

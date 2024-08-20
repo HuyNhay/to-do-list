@@ -1,77 +1,55 @@
 import { useRef, useState } from 'react';
-import { TaskType } from './data';
+import { TaskType } from '../utils/tasksReducer';
 import clsx from 'clsx';
 
-export default function Task({
-  name,
-  tasks,
-  setTasks,
-}: {
-  name: string;
-  tasks: TaskType[];
-  setTasks: React.Dispatch<React.SetStateAction<TaskType[]>>;
-}) {
+interface TaskProps {
+  task: TaskType;
+  changeTask: (task: TaskType) => void;
+  deleteTask: (taskId: number) => void;
+}
+
+export default function Task({ task, changeTask, deleteTask }: TaskProps) {
   const inputElement = useRef<HTMLInputElement>(null);
 
-  const task = tasks.find((task) => task.name === name)!;
   const [inputValue, setInputValue] = useState('');
   const [isEditing, setIsEditing] = useState(false);
-  const handleToggleTaskCompletion = () => {
-    setTasks(
-      tasks.map((task) =>
-        task.name === name ? { ...task, isCompleted: !task.isCompleted } : task
-      )
-    );
-  };
-  const handleEditTask = () => {
-    if (inputValue.slice().trim() !== '') {
-      setTasks(
-        tasks.map((task) =>
-          task.name === name ? { ...task, name: inputValue } : task
-        )
-      );
-    }
-    setIsEditing(false);
-  };
 
-  const handleDeleteTask = () => {
-    setTasks(tasks.filter((task) => task.name !== name));
-  };
   return (
-    <li className="border-b-2 py-2 text-xl shadow-[rgba(172,212,225,0.3)_2px_2px_3px] lg:mx-5 lg:rounded-md lg:text-3xl lg:shadow-[rgba(172,212,225,0.3)_0px_5px_6px_1px]">
+    <li className="grid grid-cols-8 col-span-full gap-x-2 justify-items-center items-center border-b-2 py-2 text-xl shadow-[rgba(172,212,225,0.3)_2px_2px_3px] lg:col-span-8 lg:mx-5 lg:rounded-md lg:text-3xl lg:shadow-[rgba(172,212,225,0.3)_0px_5px_6px_1px]">
       {/* Tick icon */}
-      {!isEditing && (
-        <button
-          className="float-left ml-2 lg:ml-8 inline-block hover:cursor-pointer"
-          onClick={handleToggleTaskCompletion}
+      <button
+        className="hover:cursor-pointer"
+        onClick={() => {
+          changeTask({ ...task, isCompleted: !task.isCompleted });
+        }}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className={clsx(
+            'size-8 lg:size-10',
+            task.isCompleted && 'stroke-green'
+          )}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className={clsx(
-              'size-8 lg:size-10',
-              task.isCompleted && 'stroke-green'
-            )}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-            />
-          </svg>
-        </button>
-      )}
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+      </button>
 
       {/* Task name */}
       {isEditing ? (
         <form
-          className="inline-block w-full px-2 lg:px-4 lg:py-2"
+          className="grid grid-cols-subgrid justify-items-center col-span-6"
           onSubmit={(e) => {
             e.preventDefault();
-            handleEditTask();
+            changeTask({ ...task, name: inputValue });
+            setIsEditing(false);
           }}
         >
           <input
@@ -79,19 +57,31 @@ export default function Task({
             autoFocus
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            onBlur={handleEditTask}
-            className={clsx(
-              'inline-block w-[80%] rounded-xl bg-light-green px-4 py-2 align-middle text-base outline-none lg:w-[90%] lg:text-xl'
-            )}
+            className="justify-self-stretch col-span-5 rounded-xl bg-light-blue-200 px-4 py-2 text-base outline-none lg:col-span-5 lg:text-xl"
           />
-          <button className="float-right ml-4 rounded-3xl bg-gradient-to-r from-light-green to-light-blue-100 p-2 px-4 py-2 text-base font-semibold lg:text-xl">
-            Save
+
+          {/* Save icon */}
+          <button className="hover:cursor-pointer">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="hover:stroke-light-blue size-8 lg:size-10"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M16.5 3.75V16.5L12 14.25 7.5 16.5V3.75m9 0H18A2.25 2.25 0 0 1 20.25 6v12A2.25 2.25 0 0 1 18 20.25H6A2.25 2.25 0 0 1 3.75 18V6A2.25 2.25 0 0 1 6 3.75h1.5m9 0h-9"
+              />
+            </svg>
           </button>
         </form>
       ) : (
         <p
           className={clsx(
-            'ml-8 inline-block align-middle',
+            'justify-self-start col-span-5',
             task.isCompleted && 'text-light-100 line-through'
           )}
         >
@@ -99,32 +89,10 @@ export default function Task({
         </p>
       )}
 
-      {/* Delete icons */}
-      {!isEditing && (
-        <button
-          className="float-right mr-2 inline-block hover:cursor-pointer"
-          onClick={handleDeleteTask}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            className="ml-2 size-8 stroke-light-red lg:ml-8 lg:mr-10 lg:size-10"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-            />
-          </svg>
-        </button>
-      )}
-
       {/* Edit icon */}
       {!isEditing && (
         <button
-          className="float-right inline-block hover:cursor-pointer"
+          className="hover:cursor-pointer"
           onClick={() => {
             setIsEditing(true);
             setInputValue(task.name);
@@ -146,6 +114,26 @@ export default function Task({
           </svg>
         </button>
       )}
+
+      {/* Delete icons */}
+      <button
+        className="hover:cursor-pointer"
+        onClick={() => deleteTask(task.id)}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          className="size-8 stroke-light-red lg:size-10"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+          />
+        </svg>
+      </button>
     </li>
   );
 }

@@ -25,6 +25,7 @@ export default {
     stroke: (theme) => ({
       'light-red': theme('colors.light-red'),
       green: theme('colors.green'),
+      'light-blue': theme('colors.light-blue-200'),
     }),
     extend: {
       backgroundImage: {
