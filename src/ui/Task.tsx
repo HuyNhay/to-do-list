@@ -15,7 +15,7 @@ export default function Task({ task, changeTask, deleteTask }: TaskProps) {
   const [isEditing, setIsEditing] = useState(false);
 
   return (
-    <li className="grid grid-cols-8 col-span-full gap-x-2 justify-items-center items-center border-b-2 py-2 text-xl shadow-[rgba(172,212,225,0.3)_2px_2px_3px] lg:col-span-8 lg:mx-5 lg:rounded-md lg:text-3xl lg:shadow-[rgba(172,212,225,0.3)_0px_5px_6px_1px]">
+    <li className="col-span-full grid grid-cols-subgrid items-center justify-items-center border-b-2 py-2 text-xl shadow-[rgba(172,212,225,0.3)_2px_2px_3px] lg:rounded-md lg:text-3xl lg:shadow-[rgba(172,212,225,0.3)_0px_5px_6px_1px]">
       {/* Tick icon */}
       <button
         className="hover:cursor-pointer"
@@ -45,7 +45,7 @@ export default function Task({ task, changeTask, deleteTask }: TaskProps) {
       {/* Task name */}
       {isEditing ? (
         <form
-          className="grid grid-cols-subgrid justify-items-center col-span-6"
+          className="col-span-6 grid grid-cols-subgrid justify-items-center"
           onSubmit={(e) => {
             e.preventDefault();
             changeTask({ ...task, name: inputValue });
@@ -53,11 +53,12 @@ export default function Task({ task, changeTask, deleteTask }: TaskProps) {
           }}
         >
           <input
+            name='task'
             ref={inputElement}
             autoFocus
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            className="justify-self-stretch col-span-5 rounded-xl bg-light-blue-200 px-4 py-2 text-base outline-none lg:col-span-5 lg:text-xl"
+            className="col-span-5 justify-self-stretch rounded-xl bg-light-blue-200 px-4 py-2 text-base outline-none lg:text-xl"
           />
 
           {/* Save icon */}
@@ -68,7 +69,7 @@ export default function Task({ task, changeTask, deleteTask }: TaskProps) {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="hover:stroke-light-blue size-8 lg:size-10"
+              className="size-8 hover:stroke-light-blue lg:size-10"
             >
               <path
                 strokeLinecap="round"
@@ -81,7 +82,7 @@ export default function Task({ task, changeTask, deleteTask }: TaskProps) {
       ) : (
         <p
           className={clsx(
-            'justify-self-start col-span-5',
+            'col-span-5 justify-self-start',
             task.isCompleted && 'text-light-100 line-through'
           )}
         >
@@ -125,7 +126,7 @@ export default function Task({ task, changeTask, deleteTask }: TaskProps) {
           fill="none"
           viewBox="0 0 24 24"
           strokeWidth={1.5}
-          className="size-8 stroke-light-red lg:size-10"
+          className="size-8 stroke-light-red hover:stroke-[red] lg:size-10"
         >
           <path
             strokeLinecap="round"

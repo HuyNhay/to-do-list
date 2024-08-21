@@ -4,6 +4,7 @@ import Menu from './ui/Menu';
 import TaskList from './ui/TaskList';
 import { useReducer } from 'react';
 import { initialTasks } from './utils/data';
+import Task from './ui/Task';
 
 export default function App() {
   const [tasks, dispatch] = useReducer(tasksReducer, initialTasks);
@@ -22,21 +23,28 @@ export default function App() {
 
   const handleDeleteAllTasks = () => {
     dispatch({ type: 'DELETE_ALL' });
-  }
+  };
 
   return (
-    <div className="h-screen bg-gradient bg-scroll bg-clip-border bg-no-repeat">
-      <div className="grid grid-cols-4 gap-x-4 gap-y-16 p-6 pb-24 lg:grid-cols-12 lg:pb-24">
-        <h1 className="col-span-4 text-center font-serif text-7xl tracking-widest lg:col-start-3 lg:col-end-11">
-          My Tasks
-        </h1>
+    <div className="bg-wave grid grid-cols-4 gap-x-4 gap-y-16 bg-no-repeat p-6 pb-24 lg:grid-cols-12">
+      <h1 className="col-span-full text-center font-serif text-6xl tracking-widest lg:col-span-8 lg:col-start-3 lg:text-7xl">
+        My Tasks
+      </h1>
 
-        <TaskAdder addTask={handleAddTask} />
+      <TaskAdder addTask={handleAddTask} />
 
-        <TaskList tasks={tasks} changeTask={handleChangeTask} deleteTask={handleDeleteTask} />
+      <TaskList>
+        {tasks.map((task) => (
+          <Task
+            key={task.id}
+            task={task}
+            changeTask={handleChangeTask}
+            deleteTask={handleDeleteTask}
+          />
+        ))}
+      </TaskList>
 
-        <Menu deleteAllTasks={handleDeleteAllTasks} />
-      </div>
+      <Menu deleteAllTasks={handleDeleteAllTasks} />
     </div>
   );
 }

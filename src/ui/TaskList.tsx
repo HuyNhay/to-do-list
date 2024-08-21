@@ -1,27 +1,13 @@
-import { TaskType } from '../utils/tasksReducer';
-import Task from './Task';
+import React from 'react';
 
 interface TaskListProps {
-  tasks: TaskType[];
-  changeTask: (task: TaskType) => void;
-  deleteTask: (taskId: number) => void;
+  children: React.ReactNode;
 }
 
-export default function TaskList({
-  tasks,
-  changeTask,
-  deleteTask,
-}: TaskListProps) {
+export default function TaskList({ children }: TaskListProps) {
   return (
-    <ul className="col-span-4 grid gap-y-4 lg:col-start-3 lg:col-end-11">
-      {tasks.map((task) => (
-        <Task
-          key={task.id}
-          task={task}
-          changeTask={changeTask}
-          deleteTask={deleteTask}
-        />
-      ))}
+    <ul className="col-span-full grid grid-cols-8 gap-x-2 gap-y-4 lg:col-span-8 lg:col-start-3 lg:grid-cols-subgrid lg:gap-x-4">
+      {children}
     </ul>
   );
 }
