@@ -29,7 +29,7 @@ export default {
     }),
     extend: {
       backgroundImage: {
-        wave: "url('./public/background.svg')",
+        wave: "url('/background.svg')",
       },
     },
   },
