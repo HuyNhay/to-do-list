@@ -29,7 +29,7 @@ export default {
     }),
     extend: {
       backgroundImage: {
-        'gradient': "url('./src/assets/background.svg')",
+        'wave': "url('./src/assets/background.svg')",
       }
     },
   },

@@ -4,7 +4,7 @@ interface MenuProps {
 
 export default function Menu({ deleteAllTasks }: MenuProps) {
   return (
-    <section className="fixed bottom-0 left-1/2 col-span-4 flex w-full -translate-x-1/2 justify-center gap-24 bg-light-blue-200 p-6 lg:w-[66.66667%] lg:rounded-2xl">
+    <aside className="fixed bottom-0 left-1/2 flex w-full -translate-x-1/2 justify-center gap-24 bg-light-blue-200 p-6 lg:w-[66.66667%] lg:rounded-2xl">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -56,6 +56,6 @@ export default function Menu({ deleteAllTasks }: MenuProps) {
           />
         </svg>
       </button>
-    </section>
+    </aside>
   );
 }
