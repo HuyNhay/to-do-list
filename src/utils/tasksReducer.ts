@@ -6,7 +6,7 @@ export interface TaskType {
   isCompleted: boolean;
 }
 
-type TaskAction =
+export type TaskAction =
   | { type: 'ADD'; taskName: string }
   | { type: 'CHANGE'; task: TaskType }
   | { type: 'DELETE'; taskId: number }

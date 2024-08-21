@@ -1,11 +1,14 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { useTasksDispatch } from './TasksProvider';
+import { TaskAction } from '../utils/tasksReducer';
 
-export default function TaskAdder({
-  addTask,
-}: {
-  addTask: (taskName: string) => void;
-}) {
+export default function TaskAdder() {
   const [inputValue, setInputValue] = useState('');
+  const dispatch = useTasksDispatch() as React.Dispatch<TaskAction>;
+
+  const addTask = (taskName: string) => {
+    dispatch({ type: 'ADD', taskName });
+  };
 
   return (
     <form
@@ -23,6 +26,7 @@ export default function TaskAdder({
         name="task"
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
+        autoComplete="off"
         placeholder="Add a task"
         className="rounded-lg bg-light-green px-8 py-4 outline-none lg:col-span-full"
       />

@@ -1,18 +1,25 @@
-import { useRef, useState } from 'react';
-import { TaskType } from '../utils/tasksReducer';
+import React, { useRef, useState } from 'react';
+import { TaskAction, TaskType } from '../utils/tasksReducer';
 import clsx from 'clsx';
+import { useTasksDispatch } from './TasksProvider';
 
 interface TaskProps {
   task: TaskType;
-  changeTask: (task: TaskType) => void;
-  deleteTask: (taskId: number) => void;
 }
 
-export default function Task({ task, changeTask, deleteTask }: TaskProps) {
+export default function Task({ task }: TaskProps) {
   const inputElement = useRef<HTMLInputElement>(null);
-
+  const dispatch = useTasksDispatch() as React.Dispatch<TaskAction>;
   const [inputValue, setInputValue] = useState('');
   const [isEditing, setIsEditing] = useState(false);
+
+  const changeTask = (task: TaskType) => {
+    dispatch({ type: 'CHANGE', task });
+  }
+
+  const deleteTask = (taskId: number) => {
+    dispatch({type: 'DELETE', taskId});
+  }
 
   return (
     <li className="col-span-full grid grid-cols-subgrid items-center justify-items-center border-b-2 py-2 text-xl shadow-[rgba(172,212,225,0.3)_2px_2px_3px] lg:rounded-md lg:text-3xl lg:shadow-[rgba(172,212,225,0.3)_0px_5px_6px_1px]">

@@ -1,8 +1,12 @@
-interface MenuProps {
-  deleteAllTasks: () => void;
-}
+import { TaskAction } from "../utils/tasksReducer";
+import { useTasksDispatch } from "./TasksProvider";
 
-export default function Menu({ deleteAllTasks }: MenuProps) {
+export default function Menu() {
+  const dispatch = useTasksDispatch() as React.Dispatch<TaskAction>;
+
+  const deleteAllTasks = () => {
+    dispatch({ type: 'DELETE_ALL' });
+  }
   return (
     <aside className="fixed bottom-0 left-1/2 flex w-full -translate-x-1/2 justify-center gap-24 bg-light-blue-200 p-6 lg:w-[66.66667%] lg:rounded-2xl">
       <svg
