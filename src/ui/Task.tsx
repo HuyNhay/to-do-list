@@ -53,7 +53,7 @@ export default function Task({ task, changeTask, deleteTask }: TaskProps) {
           }}
         >
           <input
-            name='task'
+            name="task"
             ref={inputElement}
             autoFocus
             value={inputValue}

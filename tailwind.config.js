@@ -29,8 +29,8 @@ export default {
     }),
     extend: {
       backgroundImage: {
-        'wave': "url('./src/assets/background.svg')",
-      }
+        wave: "url('./public/background.svg')",
+      },
     },
   },
   plugins: [],
